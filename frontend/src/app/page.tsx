@@ -161,28 +161,55 @@ export default function BuilderPage() {
               </button>
             </div>
 
-            <button
-              onClick={() => {
-                alert(
-                  "✅ Project Ready for Android Build!\n\n" +
-                  "1. Open Terminal in VS Code.\n" +
-                  "2. Run: npx cap open android\n" +
-                  "3. Android Studio will open.\n" +
-                  "4. Click 'Build > Build Bundles/APKs > Build APK'.\n\n" +
-                  "Note: This button currently just exports the JSON config as a backup."
-                );
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ screens }, null, 2));
-                const downloadAnchorNode = document.createElement('a');
-                downloadAnchorNode.setAttribute("href", dataStr);
-                downloadAnchorNode.setAttribute("download", "initialState.json");
-                document.body.appendChild(downloadAnchorNode);
-                downloadAnchorNode.click();
-                downloadAnchorNode.remove();
-              }}
-              className="ml-4 px-4 py-1.5 bg-green-600 text-white text-xs font-bold rounded-lg hover:bg-green-700 flex items-center gap-2"
-            >
-              <span>🚀 Build APK</span>
-            </button>
+            {/* Local Build Automation Buttons */}
+            <div className="flex items-center gap-2 ml-4">
+              <button
+                onClick={async () => {
+                  if (!confirm('Simpan desain ini ke Project?')) return;
+                  try {
+                    const res = await fetch('/api/save-design', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(screens)
+                    });
+                    if (res.ok) alert('✅ Desain Tersimpan!');
+                    else alert('❌ Gagal Menyimpan');
+                  } catch (e) { alert('Error saving'); }
+                }}
+                className="px-3 py-1.5 bg-gray-800 text-white text-xs font-bold rounded hover:bg-gray-700"
+                title="Save Design to Project"
+              >
+                💾 Save
+              </button>
+
+              <button
+                onClick={async () => {
+                  try {
+                    alert('⏳ Sedang memproses Build & Sync... Mohon tunggu alert berikutnya.');
+                    // 1. Build Next.js
+                    await fetch('/api/run-command', { method: 'POST', body: JSON.stringify({ command: 'build' }) });
+                    // 2. Sync Android
+                    const res = await fetch('/api/run-command', { method: 'POST', body: JSON.stringify({ command: 'sync' }) });
+                    if (res.ok) alert('✅ Sync Selesai! Siap dibuka di Android Studio.');
+                    else alert('❌ Gagal Sync');
+                  } catch (e) { alert('Error executing command'); }
+                }}
+                className="px-3 py-1.5 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700"
+                title="Build Web & Sync to Android"
+              >
+                🔄 Sync
+              </button>
+
+              <button
+                onClick={async () => {
+                  fetch('/api/run-command', { method: 'POST', body: JSON.stringify({ command: 'open' }) });
+                }}
+                className="px-3 py-1.5 bg-green-600 text-white text-xs font-bold rounded hover:bg-green-700"
+                title="Open Android Studio"
+              >
+                🤖 Studio
+              </button>
+            </div>
           </div>
         </div>
 
