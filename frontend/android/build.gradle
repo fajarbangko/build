@@ -17,6 +17,13 @@ buildscript {
 
 apply from: "variables.gradle"
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 subprojects {
     afterEvaluate { project ->
         if (project.hasProperty('android')) {
