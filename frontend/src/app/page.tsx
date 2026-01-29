@@ -174,7 +174,7 @@ export default function BuilderPage() {
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ screens }, null, 2));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
-                downloadAnchorNode.setAttribute("download", "app_schema.json");
+                downloadAnchorNode.setAttribute("download", "initialState.json");
                 document.body.appendChild(downloadAnchorNode);
                 downloadAnchorNode.click();
                 downloadAnchorNode.remove();

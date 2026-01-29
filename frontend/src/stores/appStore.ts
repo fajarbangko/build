@@ -43,57 +43,10 @@ const generateId = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
 
+import initialState from './initialState.json';
+
 export const useAppStore = create<AppState>((set, get) => ({
-  screens: [
-    {
-      "id": "screen-home",
-      "name": "Home",
-      "components": [
-        {
-          "id": "mfas11fu5uact7n9v9optq",
-          "type": "image",
-          "props": {
-            "src": "https://lelogama.go-jek.com/post_featured_image/Gojek_KV-GOKANTOR-NON-PROMO_1456x818.jpg"
-          }
-        },
-        {
-          "id": "2qr991cu60tahw7ljjaek",
-          "type": "product_grid",
-          "props": {
-            "bind_image": "Image",
-            "bind_title": "Title",
-            "bind_subtitle": "Price",
-            "itemActionType": "navigate",
-            "itemTargetScreenId": "screen-kg4wjodkwjdboashsp2p0r"
-          }
-        }
-      ]
-    },
-    {
-      "id": "screen-kg4wjodkwjdboashsp2p0r",
-      "name": "page",
-      "components": [
-        {
-          "id": "9kygpvyhtb8q37m0skuua8",
-          "type": "toolbar",
-          "props": {
-            "title": "detail"
-          }
-        },
-        {
-          "id": "dqd93uka0ehxp79cjv91mc",
-          "type": "product_detail",
-          "props": {
-            "dataBind_title": "Title",
-            "dataBind_price": "Price",
-            "dataBind_description": "Description",
-            "dataBind_image": "Image",
-            "whatsappNumber": "6282246197193"
-          }
-        }
-      ]
-    }
-  ],
+  screens: initialState as AppScreen[],
   activeScreenId: 'screen-home',
   selectedId: null,
   isPreviewMode: false,
